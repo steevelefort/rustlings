@@ -1,3 +1,5 @@
+use core::iter::Iterator;
+
 fn factorial(num: u64) -> u64 {
     // TODO: Complete this function to return the factorial of `num` which is
     // defined as `1 * 2 * 3 * … * num`.
@@ -10,6 +12,9 @@ fn factorial(num: u64) -> u64 {
     // - additional variables
     // For an extra challenge, don't use:
     // - recursion
+    
+    // (1..num+1).fold(1, |acc, n| { acc*n })
+    (1..=num).product()
 }
 
 fn main() {

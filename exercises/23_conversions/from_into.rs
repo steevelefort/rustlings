@@ -3,6 +3,8 @@
 // You can read more about it in the documentation:
 // https://doc.rust-lang.org/std/convert/trait.From.html
 
+use core::convert::From;
+
 #[derive(Debug)]
 struct Person {
     name: String,
@@ -34,7 +36,29 @@ impl Default for Person {
 // 5. Parse the second element from the split operation into a `u8` as the age.
 // 6. If parsing the age fails, return the default of `Person`.
 impl From<&str> for Person {
-    fn from(s: &str) -> Self {}
+    fn from(s: &str) -> Self {
+        let data: Vec<_> = s.split(",").collect();
+        if data.len() != 2 {
+            Person::default()
+        } else {
+
+            let age = if let Ok(x) = data[1].parse::<u8>() {
+                x
+            } else {
+                return Person::default();
+            };
+
+            let name = data[0].to_string();
+            if name.is_empty() {
+                return Person::default();
+            }
+
+            Person {
+                name,
+                age,
+            }
+        }
+    }
 }
 
 fn main() {
@@ -45,6 +69,10 @@ fn main() {
     // Since `From` is implemented for Person, we are able to use `Into`.
     let p2: Person = "Gerald,70".into();
     println!("{p2:?}");
+
+    let p3 = Person::from("");
+    println!("{p3:?}");
+
 }
 
 #[cfg(test)]
